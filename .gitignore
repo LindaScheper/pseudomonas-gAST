@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Analysis outputs / intermediate files
+*.pkl
+*.json
+*.csv
+
+# Generated figures
+*.png
+*.pdf
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Published data files
+!data/exclude63.json
+!data/porin_rescue.json
+
+!data/sample_table.pkl
+!data/Mutationen_pro_Gen_mit_value_type.xlsx
+!data/AMRFP_all_isolates.xlsx

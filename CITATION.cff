@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+title: "Genotypic AST for Pseudomonas aeruginosa — Analysis Pipeline"
+message: "If you use this repository, please cite the associated manuscript."
+type: software
+
+authors:
+  - family-names: Scheper
+    given-names: Linda
+
+repository-code: "https://github.com/Linda26061998/pseudomonas-gAST"
+
+license: MIT
+version: 1.0.0
+date-released: 2026-09-09
