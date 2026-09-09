@@ -114,16 +114,21 @@ of this analysis.
 
 ```
 
-The folder names above are a suggestion; every script in `derived/` and
-`consolidate/` uses **plain relative filenames** (e.g. `open("buildcache.pkl")`)
-rather than `paths.py`, so in practice **all scripts and all data files must
-be run from the same flat working directory**. Only `paths.py`,
-`13\\\_dedup\\\_marker.py`, `14\\\_mexxy\\\_traeger.py`, `15\\\_mechanismusklassen.py`,
-`17\\\_drei\\\_zustaende.py`, `01\\\_konfidenzintervalle.py`, `03\\\_filterkosten.py`,
-`04\\\_schwelle\\\_1komma4.py`, `02\\\_enzym\\\_rule\\\_in.py`, `00\\\_amr\\\_einlesen.py` and all `figures/\\\*.py`
-scripts use `paths.DATA` / `paths.OUT`. If you keep everything in one
-directory and run all scripts from there, this inconsistency does not
-matter in practice.
+The repository is organised into separate folders for build, derived analysis,
+consolidation, figures, and data. However, several scripts originate from the
+original analysis workflow and use plain relative filenames (e.g.
+`open("buildcache.pkl")`) rather than consistently using `paths.py`. Therefore,
+the scripts are not currently designed to be executed directly from their
+respective subdirectories.
+
+For reproducibility, the analysis should be run from a common working
+directory containing the required input files and intermediate outputs.
+Scripts that use `paths.DATA` / `paths.OUT` can use the repository structure
+directly, whereas scripts relying on plain relative filenames may require the
+corresponding generated files to be present in the current working directory.
+
+This reflects the original analysis workflow and is documented here to make
+the execution requirements transparent.
 
 ## Requirements
 
@@ -281,12 +286,3 @@ python figS4\\\_deduplication.py     # -> SupplementaryFigure4\\\_deduplication.
 
 All figure scripts read from `figdata.pkl` and/or the JSON files produced
 in steps 3–5, plus `buildcache.pkl` where noted in the script itself.
-
-## Known issues
-
-- `fig6\\\_reporting.py` currently writes its output as
-  `Figure6\\\_deduplication.png/.pdf` instead of `Figure6\\\_reporting.png/.pdf`
-  (naming artefact, does not collide with `figS4\\\_deduplication.py`'s
-  `SupplementaryFigure4\\\_deduplication`).
-- `v3\\\_amr.pkl` is AMRFinder output; the exact AMRFinder version and
-  parameters used should be documented in the Methods section.
