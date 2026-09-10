@@ -26,6 +26,11 @@ for ab in ABS:
                    rA=float(d.loc[d.centre == "A", "R"].mean()),
                    rB=float(d.loc[d.centre == "B", "R"].mean()))
 D["cohort"] = coh
+import pandas as pd, numpy as np, collections
+
+# d0 bleibt fuer die Jahres-Uebersicht (D["years"]) bei CIP, da dort das
+# vollstaendige Datumsfeld am zuverlaessigsten vorliegt; falls gewuenscht,
+# kann das ebenfalls auf die Union umgestellt werden.
 d0 = C["CIP"][0]
 yrs = []
 for i in d0.isolate:
@@ -33,11 +38,20 @@ for i in d0.isolate:
     except Exception: yrs.append(np.nan)
 tmp = d0.assign(year=yrs)
 D["years"] = tmp.dropna(subset=["year"]).groupby(["year", "centre"]).size().unstack(fill_value=0)
-# st_all: vollstaendige Verteilung aller Sequenztypen (fuer den "Other"-Bucket in Fig1b).
-# st_top bleibt wie bisher auf die 16 haeufigsten begrenzt (fuer andere Abbildungsvarianten).
-_st_counts = collections.Counter(d0.st)
+
+# --- Sequenztyp-Verteilung: Union ueber ALLE Antibiotika-Kohorten (5749 Isolate),
+# nicht nur CIP. Jedes Isolat hat unabhaengig vom Antibiotikum denselben ST,
+# ein einfaches Update-Mapping reicht daher aus.
+_st_map = {}
+for _ab in ABS:
+    _d, _f2, _gn = C[_ab]
+    for _iso, _st in zip(_d.isolate, _d.st):
+        _st_map[_iso] = _st
+
+_st_counts = collections.Counter(_st_map.values())
 D["st_top"] = _st_counts.most_common(16)
 D["st_all"] = dict(_st_counts)
+D["n_cohort_union"] = len(_st_map)   # 5749, zur Kontrolle/Beschriftung nutzbar
 D["highrisk"] = {"235","111","175","244","277","357","308","381","233","654"}
 D["npat"] = {ab: int(pd.Series([str(META.get(i, {}).get("patient")) for i in C[ab][0].isolate]).nunique())
              for ab in ABS}

@@ -25,6 +25,10 @@ gs = GridSpec(3, 4, figure=fig, height_ratios=[1.45, 1.0, 1.15], hspace=0.6, wsp
 
 # --- a) Sequenztypen (gebrochene x-Achse, Top 12 + Other)
 # (ehemals Panel b; nimmt jetzt die gesamte obere Reihe ein, da Panel a entfernt wurde)
+# WICHTIG: D["st_all"] muss aus 01_figdata.py mit der UNION aller vier
+# Antibiotika-Kohorten erzeugt worden sein (5749 Isolate insgesamt, davon
+# 655 ohne verwertbaren ST -> 5094 in den Balken unten), nicht nur aus der
+# CIP-Kohorte (5735 Isolate, davon 5081 mit ST). Siehe 01_figdata_PATCH.py.
 gs_b = gs[0, :].subgridspec(1, 2, width_ratios=[3.4, 1.0], wspace=0.05)
 axL = fig.add_subplot(gs_b[0, 0])
 axR = fig.add_subplot(gs_b[0, 1], sharey=axL)
@@ -50,7 +54,9 @@ for ax in (axL, axR):
 
 axL.set_xlim(0, BRK)
 axR.set_xlim(n_other * 0.94, n_other * 1.05)
-axR.set_xticks([3100])
+# dynamisch statt hartkodiert (n_other aendert sich mit der Kohortenbasis,
+# z.B. 3100 -> ca. 3131 bei der Union-basierten st_all)
+axR.set_xticks([round(n_other, -1)])
 axL.set_ylim(-0.7, len(rows) - 0.3)
 
 axL.set_yticks(range(len(rows)))
